@@ -1,5 +1,6 @@
 package com.example.zomato.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -30,5 +31,6 @@ public class DeliveryPartner {
     private double rating;
 
     @OneToMany(mappedBy = "deliveryPartner")
+    @JsonIgnore
     private List<FoodOrder> foodOrders;
 }
