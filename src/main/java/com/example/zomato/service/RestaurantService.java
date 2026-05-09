@@ -7,6 +7,7 @@ import com.example.zomato.dto.response.FoodItemResponse;
 import com.example.zomato.dto.response.RestaurantResponse;
 import com.example.zomato.exceptions.RestaurantNotFound;
 import com.example.zomato.models.FoodItem;
+import com.example.zomato.models.Menu;
 import com.example.zomato.models.Restaurant;
 import com.example.zomato.repository.RestaurantRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,23 @@ public class RestaurantService {
             if(foodItem.isVeg()==isVeg) responseList.add(FoodItemConvertor.foodItemtoFoodItemResponse(foodItem));
         }
         return responseList;
+    }
+
+    public List<FoodItemResponse> getFoodItems(int restaurantId,int min,int max){
+        Optional<Restaurant> optional=restaurantRepo.findById(restaurantId);
+        if(optional.isEmpty()) throw new RestaurantNotFound("Invalid Restaurant id "+restaurantId);
+
+        Restaurant restaurant=optional.get();
+        Menu menu=restaurant.getMenu();
+        List<FoodItem> foodItems=menu.getFoodItems();
+
+        List<FoodItemResponse> foodItemResponses=new ArrayList<>();
+
+        for(FoodItem foodItem:foodItems){
+            if(foodItem.getPrice()>min && foodItem.getPrice()<max){
+                foodItemResponses.add(FoodItemConvertor.foodItemtoFoodItemResponse(foodItem));
+            }
+        }
+        return foodItemResponses;
     }
 }

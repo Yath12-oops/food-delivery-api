@@ -34,4 +34,15 @@ public class RestaurantController {
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/min/{min}/max/{max}")
+    public ResponseEntity getFoodItems(@RequestParam("id") int id,@PathVariable int min,
+                                       @PathVariable int max){
+        try{
+            List<FoodItemResponse> response=restaurantService.getFoodItems(id,min,max);
+            return new ResponseEntity(response,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
 }
