@@ -45,4 +45,16 @@ public class RestaurantController {
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PatchMapping
+    public ResponseEntity updateRestaurant(@RequestParam("id") int restaurantId,@RequestBody RestaurantRequest restaurantRequest){
+        try{
+            RestaurantResponse response=restaurantService.updateRestaurant(restaurantId,restaurantRequest);
+            return new ResponseEntity(response,HttpStatus.OK);
+        }
+        catch (Exception e){
+            return  new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

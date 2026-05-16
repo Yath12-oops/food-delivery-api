@@ -10,6 +10,7 @@ import com.example.zomato.models.Menu;
 import com.example.zomato.models.Restaurant;
 import com.example.zomato.repository.MenuRepo;
 import com.example.zomato.repository.RestaurantRepo;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,5 +66,30 @@ public class MenuService {
         }
         menuResponse.setFoodItems(foodItemResponses);
         return menuResponse;
+    }
+
+    public MenuResponse deleteMenu(int restaurantId) {
+
+        Optional<Restaurant> optional =restaurantRepo.findById(restaurantId);
+
+        if(optional.isEmpty()) throw new RestaurantNotFound("Invalid Restaurant Id " + restaurantId);
+
+        Restaurant restaurant = optional.get();
+
+        Menu menu = restaurant.getMenu();
+
+        MenuResponse response = new MenuResponse();
+
+        response.setRestaurantName(restaurant.getName());
+
+        List<FoodItemResponse> responses = new ArrayList<>();
+
+        for(FoodItem foodItem : menu.getFoodItems()) {
+            responses.add(FoodItemConvertor.foodItemtoFoodItemResponse(foodItem));
+        }
+
+        response.setFoodItems(responses);
+
+        return response;
     }
 }

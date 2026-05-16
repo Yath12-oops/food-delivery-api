@@ -33,4 +33,16 @@ public class MenuController {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping
+    public ResponseEntity deleteMenu(@RequestParam("id") int restaurantId){
+
+        try{
+            MenuResponse response=menuService.deleteMenu(restaurantId);
+            return new ResponseEntity(response,HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
 }

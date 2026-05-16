@@ -64,4 +64,23 @@ public class RestaurantService {
         }
         return foodItemResponses;
     }
+
+    public RestaurantResponse updateRestaurant(int restaurantId, RestaurantRequest restaurantRequest) {
+        Optional<Restaurant> optional=restaurantRepo.findById(restaurantId);
+        if(optional.isEmpty()){
+            throw new RestaurantNotFound("Invalid Restaurant id "+restaurantId);
+        }
+        Restaurant restaurant=optional.get();
+
+        restaurant.setRestaurantType(restaurantRequest.getRestaurantType());
+        restaurant.setLocation(restaurantRequest.getLocation());
+        restaurant.setContactNo(restaurantRequest.getContactNo());
+
+        Restaurant saved=restaurantRepo.save(restaurant);
+
+        return RestaurantResponse.builder()
+                .name(saved.getName())
+                .message("Updated Successfully")
+                .build();
+    }
 }
