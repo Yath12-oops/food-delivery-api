@@ -29,4 +29,14 @@ public class FoodOrderController {
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/history")
+    public ResponseEntity getOrderHistory(@RequestParam("customerId") int customerId){
+        try{
+            List<FoodOrderResponse> response=foodOrderService.getOrderHistory(customerId);
+            return new ResponseEntity(response,HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
 }

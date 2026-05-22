@@ -94,4 +94,18 @@ public class FoodOrderService {
 
         return FoodOrderConvertor.foodOrderToFoodOrderResponse(savedOrder);
     }
+
+    public List<FoodOrderResponse> getOrderHistory(int customerId) {
+        Optional<Customer> optionalCustomer=customerRepo.findById(customerId);
+        if(optionalCustomer.isEmpty()){
+            throw new CustomerNotFound("Invalid customerId "+customerId);
+        }
+        Customer customer=optionalCustomer.get();
+        List<FoodOrder> foodOrders=customer.getFoodOrders();
+        List<FoodOrderResponse> responses=new ArrayList<>();
+        for(FoodOrder foodOrder:foodOrders){
+            responses.add(FoodOrderConvertor.foodOrderToFoodOrderResponse(foodOrder));
+        }
+        return responses;
+    }
 }
